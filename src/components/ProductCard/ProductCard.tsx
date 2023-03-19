@@ -1,7 +1,14 @@
+import * as React from "react";
 import classNames from "classnames";
 import Chip from "../Chip/Chip";
+import { Product } from "types/product.type";
 
-const Card = ({ product, clickHandler }) => {
+type CardProps = {
+  product: Product;
+  clickHandler: (product: Product) => void;
+};
+
+const ProductCard = ({ product, clickHandler }: CardProps) => {
   const { image_link, title, price, gender, sale_price } = product;
 
   const hasDiscount = Boolean(sale_price < price);
@@ -49,4 +56,4 @@ const Card = ({ product, clickHandler }) => {
   );
 };
 
-export default Card;
+export default ProductCard;

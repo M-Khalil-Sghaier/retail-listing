@@ -1,10 +1,10 @@
-import { useMemo, useState, useRef, useLayoutEffect, useEffect } from "react";
-import { RiCloseLine } from "react-icons/ri";
+import React from "react";
+import { RiCloseLine, RiH1 } from "react-icons/ri";
 import { VariableSizeList as List } from "react-window";
 
 // Components
 import Button from "./components/Button/Button";
-import Card from "./components/Card/Card";
+import ProductCard from "./components/ProductCard/ProductCard";
 import Modal from "./components/Modal/Modal";
 import SelectBox from "./components/SelectBox/SelectBox";
 import SearchField from "./components/SearchField/SearchField";
@@ -12,13 +12,16 @@ import ImageGallery from "./components/ImageGallery/ImageGallery";
 import SwitchBox from "./components/SwitchBox/SwitchBox";
 // Utils
 import parser from "./utils/parser";
-import arrayToMatrix from "./utils/arrayToMatrix";
+import {arrayToMatrix} from "./utils/arrayToMatrix";
 // Hooks
 import useFetch from "./hooks/useFetch";
+import { Product } from "types/product.type";
+// import { Product } from "types/product.type";
+
 function App() {
   // Gender select optionsList
   // Needs to be memoised for object referential integrity
-  const genderFilterOptions = useMemo(
+  const genderFilterOptions = React.useMemo(
     () => [
       { id: 1, name: "All", value: null },
       { id: 2, name: "Female", value: "female" },
@@ -29,27 +32,30 @@ function App() {
   );
 
   // Paper wrapper ref
-  const paperWrapperRef = useRef(null);
+  const paperWrapperRef = React.useRef<HTMLDivElement | null>(null);
   // Gender filter state
-  const [filter, setFilter] = useState(genderFilterOptions[0]);
+  const [filter, setFilter] = React.useState(genderFilterOptions[0]);
   // Currently selected product state
-  const [clickedProduct, setClickedProduct] = useState(null);
+  const [clickedProduct, setClickedProduct] = React.useState<Product | null>(
+    null
+  );
   // Modal state
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
   // Sales switch state
-  const [showOnSale, setShowOnSale] = useState(false);
+  const [showOnSale, setShowOnSale] = React.useState(false);
   // Search field state
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = React.useState("");
   // Container width state
-  const [containerWidth, setContainerWidth] = useState(1);
+  const [containerWidth, setContainerWidth] = React.useState(1);
 
-  const { data } = useFetch(`${process.env.PUBLIC_URL}/products.csv`);
+  const { data } = useFetch<string>(`${process.env.PUBLIC_URL}/products.csv`);
 
-  const productsList = useMemo(() => {
+  const productsList = React.useMemo(() => {
     if (data) {
+      const parsedProducts = parser(data) as Product[];
       // Filter by gender if sales filter has a value
       if (filter.value && !showOnSale) {
-        return parser(data).filter(
+        return parsedProducts.filter(
           (product) =>
             product.gender === filter.value &&
             product.title.toLowerCase().startsWith(searchQuery.toLowerCase())
@@ -58,7 +64,7 @@ function App() {
       // Show products on sale
       // Check if other filters are set and filter accordingly
       if (showOnSale) {
-        return parser(data).filter((product) =>
+        return parsedProducts.filter((product) =>
           filter.value
             ? product.sale_price < product.price &&
               product.gender === filter.value &&
@@ -68,29 +74,29 @@ function App() {
         );
       }
       // Return all products
-      return parser(data).filter((product) =>
+      return parsedProducts.filter((product) =>
         product.title.toLowerCase().startsWith(searchQuery.toLowerCase())
       );
     }
     return null;
   }, [data, filter.value, showOnSale, searchQuery]);
 
-  const productClickHandler = (product) => {
+  const productClickHandler = (product: Product) => {
     // Set selected product
     setClickedProduct(product);
     // Open modal with with the selected product
     setIsModalOpen(true);
   };
 
-  const onSearchFieldSelection = (product) => {
+  const onSearchFieldSelection = (product: Product) => {
     setSearchQuery(product.title);
   };
 
-  useLayoutEffect(() => {
+  React.useLayoutEffect(() => {
     if (paperWrapperRef.current) {
       // Render the list on window resize
       window.addEventListener("resize", (e) => {
-        setContainerWidth(e.target.innerWidth);
+        setContainerWidth((e.target as Window).innerWidth);
       });
     }
 
@@ -108,13 +114,13 @@ function App() {
         <div className="sticky z-30 px-4 py-5 -mx-4 bg-white -top-6">
           <div className="grid items-end grid-cols-3 gap-4">
             {/* Search by title */}
-            <SearchField
-              options={productsList?.slice(0, 100) ?? []}
+            {/* <SearchField
+              // options={productsList?.slice(0, 100) ?? []}
               value={searchQuery}
               onChange={setSearchQuery}
               onSelect={onSearchFieldSelection}
               placeholder="Search"
-            />
+            /> */}
             {/* Filter by gender */}
             <SelectBox
               selected={filter}
@@ -131,22 +137,25 @@ function App() {
         </div>
         {productsList && productsList.length > 0 && containerWidth > 0 && (
           <List
-            height={paperWrapperRef?.current?.clientHeight}
-            itemCount={arrayToMatrix(productsList)?.length}
+            itemCount={arrayToMatrix(productsList)?.length ?? 0}
             itemSize={() => 400}
-            width={paperWrapperRef?.current?.clientWidth}
+            width={paperWrapperRef?.current?.clientWidth ?? "100%"}
+            height={paperWrapperRef?.current?.clientHeight ?? "100%"}
           >
             {({ index, style }) => (
               <div className="flex gap-4 py-5 pr-5" style={{ ...style }}>
                 {arrayToMatrix(productsList) &&
                   arrayToMatrix(productsList).length &&
-                  arrayToMatrix(productsList)[index]?.map((item) => (
+                  arrayToMatrix(productsList)[index]?.map((item: Product) => (
                     <div
                       className="flex-grow-0 w-1/3 h-full"
                       key={item.gtin}
                       data-testid="product-item"
                     >
-                      <Card product={item} clickHandler={productClickHandler} />
+                      <ProductCard
+                        product={item}
+                        clickHandler={productClickHandler}
+                      />
                     </div>
                   ))}
               </div>
@@ -163,7 +172,7 @@ function App() {
           }}
         >
           <ImageGallery
-            imageLinks={clickedProduct?.additional_image_link.split(", ")}
+            imageLinks={clickedProduct?.additional_image_link.split(", ") ?? []}
           />
           <div className="absolute top-2 right-3">
             <Button onClick={() => setIsModalOpen(false)}>

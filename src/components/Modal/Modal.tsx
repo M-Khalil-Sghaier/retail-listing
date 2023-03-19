@@ -1,6 +1,15 @@
+import React, { ReactNode } from "react";
+
 import { Dialog } from "@headlessui/react";
 
-function Modal({ isOpen = false, onClose, children, title }) {
+type ModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  children: ReactNode;
+  title: ReactNode;
+};
+
+const Modal = ({ isOpen = false, onClose, children, title }: ModalProps) => {
   return (
     <Dialog
       open={isOpen}
@@ -18,6 +27,6 @@ function Modal({ isOpen = false, onClose, children, title }) {
       </div>
     </Dialog>
   );
-}
+};
 
 export default Modal;

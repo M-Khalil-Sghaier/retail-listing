@@ -1,8 +1,20 @@
 import { Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
+import React from "react";
 import { RiCheckLine, RiArrowDownSLine } from "react-icons/ri";
 
-const SelectBox = ({ selected, onChange, options }) => {
+export type SelectBoxOption = {
+  id: number;
+  name: string;
+  value: null | string;
+};
+export type SelectBoxProps = {
+  selected: SelectBoxOption;
+  onChange: (selected: SelectBoxOption) => void;
+  options: SelectBoxOption[];
+};
+
+const SelectBox = ({ selected, onChange, options }: SelectBoxProps) => {
   return (
     <Listbox value={selected} onChange={onChange}>
       <div className="relative mt-1">

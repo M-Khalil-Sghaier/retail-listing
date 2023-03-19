@@ -1,6 +1,13 @@
+import React from "react";
 import { Switch } from "@headlessui/react";
 
-const SwitchBox = ({ label, enabled, onChange }) => {
+type SwitchBoxProps = {
+  label: string;
+  enabled: boolean;
+  onChange: (checked: boolean) => void;
+};
+
+const SwitchBox = ({ label, enabled, onChange }: SwitchBoxProps) => {
   return (
     <Switch.Group>
       <div className="flex items-center">

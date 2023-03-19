@@ -1,7 +1,7 @@
-import { useState } from "react";
+import * as React from "react";
 import classNames from "classnames";
-const ImageGallery = ({ imageLinks }) => {
-  const [currentImage, setCurrentImage] = useState(0);
+const ImageGallery = ({ imageLinks }: { imageLinks: string[] }) => {
+  const [currentImage, setCurrentImage] = React.useState(0);
   return (
     <div className="flex gap-5">
       <div className="flex-grow-0 w-[150px]">

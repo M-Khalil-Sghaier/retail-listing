@@ -1,17 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Card should render without crashing 1`] = `
-<button
-  class="relative block bg-white rounded shadow-sm"
+<div
+  class="relative block h-full bg-white rounded shadow-sm"
   data-testid="card"
-  tabindex="0"
 >
   <div
-    class="relative pb-[75%] overflow-hidden group cursor-pointer"
+    class="relative h-[250px] overflow-hidden group cursor-pointer"
   >
     <img
       alt="Weekday THURSDAY Jeans Slim Fit black"
-      class="absolute top-0 left-0 z-0 object-cover w-full h-full transition-transform duration-500 ease-in-out scale-100 group-hover:scale-75"
+      class="z-0 block object-contain w-full h-full mx-auto transition-transform duration-500 ease-in-out scale-100 group-hover:scale-75"
       loading="lazy"
       src="https://mosaic01.ztat.net/vgs/media/large/WE/B2/1N/00/HQ/11/WEB21N00H-Q11@12.4.jpg"
     />
@@ -19,7 +18,7 @@ exports[`Card should render without crashing 1`] = `
       class="absolute top-2 right-2 z-[1]"
     >
       <p
-        class="inline-flex justify-center items-center rounded-full h-5 px-2 border-2  bg-red-600 border-white font-poppins"
+        class="inline-flex items-center justify-center h-5 px-2 bg-red-600 border-2 border-white rounded-full font-poppins"
       >
         <span
           class="text-[10px] leading-[1] text-white"
@@ -39,11 +38,15 @@ exports[`Card should render without crashing 1`] = `
       Weekday THURSDAY Jeans Slim Fit black
     </h2>
     <h3
-      class="text-sm text-gray-600 font-lato"
+      class="text-sm font-bold text-gray-600 font-lato"
       data-testid="card-price"
     >
-      39.95 EUR
+      <span
+        class=""
+      >
+        39.95 EUR
+      </span>
     </h3>
   </div>
-</button>
+</div>
 `;

@@ -1,5 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import * as React from "react";
 import classNames from "classnames";
+import { Product } from "types/product.type";
+
+type SearchFieldProps<T> = {
+  options: T[];
+  value: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+  onSelect: (option: T) => void;
+};
 
 export default function SearchField({
   options,
@@ -7,19 +16,19 @@ export default function SearchField({
   onChange,
   placeholder,
   onSelect,
-}) {
-  const [showOptions, setShowOptions] = useState(false);
-  const [cursor, setCursor] = useState(-1);
-  const ref = useRef();
+}: SearchFieldProps<Product>) {
+  const [showOptions, setShowOptions] = React.useState(false);
+  const [cursor, setCursor] = React.useState(-1);
+  const ref = React.useRef<HTMLDivElement | null>(null);
 
   //   Option click handler
-  const onOptionClick = (option) => {
+  const onOptionClick = (option: Product) => {
     onSelect(option);
     setShowOptions(false);
   };
 
   //   Input change handler
-  const handleChange = (userInput) => {
+  const handleChange = (userInput: string) => {
     onChange(userInput);
     setCursor(-1);
     if (!showOptions) {
@@ -28,7 +37,7 @@ export default function SearchField({
   };
 
   //   Keyboard navigation handler
-  const handleNav = (e) => {
+  const handleNav = (e: React.KeyboardEvent<HTMLInputElement>) => {
     switch (e.key) {
       case "ArrowUp":
         if (cursor > 0) {
@@ -49,16 +58,16 @@ export default function SearchField({
   };
 
   //   Close the dropdown on outside click
-  useEffect(() => {
-    const listener = (e) => {
-      if (!ref.current.contains(e.target)) {
+  React.useEffect(() => {
+    const listener = (e: MouseEvent | FocusEvent) => {
+      if (!ref.current?.contains(e.target as Node)) {
         setShowOptions(false);
         setCursor(-1);
       }
     };
 
-    document.addEventListener("click", listener);
-    document.addEventListener("focusin", listener);
+    document.addEventListener("click", (e) => listener(e));
+    document.addEventListener("focusin", (e) => listener);
     // Remove event listeners on cleanup
     return () => {
       document.removeEventListener("click", listener);
@@ -75,7 +84,7 @@ export default function SearchField({
         value={value}
         onChange={(e) => handleChange(e.target.value)}
         onFocus={() => setShowOptions(true)}
-        onKeyDown={handleNav}
+        onKeyDown={(e) => handleNav}
       />
 
       <div

@@ -1,6 +1,18 @@
+import * as React from "react";
 import classNames from "classnames";
 
-const Button = ({ children, onClick, variant = "raised", ...props }) => {
+type ButtonProps = {
+  children: React.ReactNode;
+  onClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  variant?: "outline" | "raised";
+};
+
+const Button = ({
+  children,
+  onClick,
+  variant = "raised",
+  ...props
+}: ButtonProps) => {
   const baseClasses =
     "text-base w-8 h-8 inline-flex flex-shrink-0 rounded-full items-center justify-center leading-1 transition duration-200 focus:outline-none";
   const outline =
@@ -14,7 +26,7 @@ const Button = ({ children, onClick, variant = "raised", ...props }) => {
     variant === "raised" && raised
   );
   return (
-    <button className={buttonClasses} onClick={onClick} {...props}>
+    <button className={buttonClasses} onClick={(e) => onClick(e)} {...props}>
       {children}
     </button>
   );
