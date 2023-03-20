@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Card should render without crashing 1`] = `
+<div
+  class="relative block h-full bg-white rounded shadow-sm"
+  data-testid="card"
+>
+  <div
+    class="relative h-[250px] overflow-hidden group cursor-pointer"
+  >
+    <img
+      alt="Weekday THURSDAY Jeans Slim Fit black"
+      class="z-0 block object-contain w-full h-full mx-auto transition-transform duration-500 ease-in-out scale-100 group-hover:scale-75"
+      loading="lazy"
+      src="https://mosaic01.ztat.net/vgs/media/large/WE/B2/1N/00/HQ/11/WEB21N00H-Q11@12.4.jpg"
+    />
+    <div
+      class="absolute top-2 right-2 z-[1]"
+    >
+      <p
+        class="inline-flex items-center justify-center h-5 px-2 bg-red-600 border-2 border-white rounded-full font-poppins"
+      >
+        <span
+          class="text-[10px] leading-[1] text-white"
+        >
+          FEMALE
+        </span>
+      </p>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <h2
+      class="mb-2 text-lg font-bold cursor-default font-lato"
+      data-testid="card-title"
+    >
+      Weekday THURSDAY Jeans Slim Fit black
+    </h2>
+    <h3
+      class="text-sm font-bold text-gray-600 font-lato"
+      data-testid="card-price"
+    >
+      <span
+        class=""
+      >
+        39.95 EUR
+      </span>
+    </h3>
+  </div>
+</div>
+`;
