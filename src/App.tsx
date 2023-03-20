@@ -1,5 +1,5 @@
 import React from "react";
-import { RiCloseLine, RiH1 } from "react-icons/ri";
+import { RiCloseLine } from "react-icons/ri";
 import { VariableSizeList as List } from "react-window";
 
 // Components
@@ -12,11 +12,10 @@ import ImageGallery from "./components/ImageGallery/ImageGallery";
 import SwitchBox from "./components/SwitchBox/SwitchBox";
 // Utils
 import parser from "./utils/parser";
-import {arrayToMatrix} from "./utils/arrayToMatrix";
+import { arrayToMatrix } from "./utils/arrayToMatrix";
 // Hooks
 import useFetch from "./hooks/useFetch";
 import { Product } from "types/product.type";
-// import { Product } from "types/product.type";
 
 function App() {
   // Gender select optionsList
@@ -103,7 +102,7 @@ function App() {
     return () => {
       window.removeEventListener("resize", () => {});
     };
-  }, [paperWrapperRef.current]);
+  }, []);
 
   return (
     <div className="w-screen h-screen p-2 overflow-hidden bg-gray-200">
@@ -114,13 +113,13 @@ function App() {
         <div className="sticky z-30 px-4 py-5 -mx-4 bg-white -top-6">
           <div className="grid items-end grid-cols-3 gap-4">
             {/* Search by title */}
-            {/* <SearchField
-              // options={productsList?.slice(0, 100) ?? []}
+            <SearchField
+              options={productsList?.slice(0, 100) ?? []}
               value={searchQuery}
               onChange={setSearchQuery}
               onSelect={onSearchFieldSelection}
               placeholder="Search"
-            /> */}
+            />
             {/* Filter by gender */}
             <SelectBox
               selected={filter}
