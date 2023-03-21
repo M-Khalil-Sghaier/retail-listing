@@ -80,6 +80,11 @@ function App() {
     return null;
   }, [data, filter.value, showOnSale, searchQuery]);
 
+  const groupedProducts = React.useMemo(() => {
+    if (productsList?.length) return arrayToMatrix(productsList);
+    return [];
+  }, [productsList]);
+
   const productClickHandler = (product: Product) => {
     // Set selected product
     setClickedProduct(product);
@@ -143,20 +148,20 @@ function App() {
           >
             {({ index, style }) => (
               <div className="flex gap-4 py-5 pr-5" style={{ ...style }}>
-                {arrayToMatrix(productsList) &&
-                  arrayToMatrix(productsList).length &&
-                  arrayToMatrix(productsList)[index]?.map((item: Product) => (
-                    <div
-                      className="flex-grow-0 w-1/3 h-full"
-                      key={item.gtin}
-                      data-testid="product-item"
-                    >
-                      <ProductCard
-                        product={item}
-                        clickHandler={productClickHandler}
-                      />
-                    </div>
-                  ))}
+                {groupedProducts && groupedProducts.length
+                  ? groupedProducts[index]?.map((item: Product) => (
+                      <div
+                        className="flex-grow-0 w-1/3 h-full"
+                        key={item.gtin}
+                        data-testid="product-item"
+                      >
+                        <ProductCard
+                          product={item}
+                          clickHandler={productClickHandler}
+                        />
+                      </div>
+                    ))
+                  : null}
               </div>
             )}
           </List>
